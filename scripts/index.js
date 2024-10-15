@@ -4,7 +4,22 @@ let currentPage = 1;
 const defaultCoverImage =
   "https://images.inc.com/uploaded_files/image/1920x1080/getty_509107562_2000133320009280346_351827.jpg"; // Default image for missing covers
 
+function toggleLoader(show) {
+  const loader = document.getElementById("loader");
+  loader.style.display = show ? "block" : "none";
+}
+
+function updateLocalStorage(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+// Function to retrieve data from localStorage
+function getFromLocalStorage(key) {
+  return JSON.parse(localStorage.getItem(key)) || null;
+}
+
 async function fetchBooks(page = 1) {
+  toggleLoader(true);
   try {
     const response = await fetch(apiUrl + `?page=${page}`);
     const data = await response.json();
@@ -13,6 +28,8 @@ async function fetchBooks(page = 1) {
     createPagination(data.count);
   } catch (error) {
     console.error("Error fetching books:", error);
+  } finally {
+    toggleLoader(false);
   }
 }
 
@@ -78,6 +95,8 @@ function shouldDisplayPage(pageNumber, totalPages) {
   );
 }
 
+// pagination functionalities
+
 function createPagination(totalBooks) {
   const pagination = document.querySelector(".pagination");
   pagination.innerHTML = "";
@@ -106,6 +125,40 @@ function createPaginationButton(pageNumber) {
   });
 
   return button;
+}
+
+// wishlist funtionalities
+
+function getWishlist() {
+  return JSON.parse(localStorage.getItem("wishlist")) || [];
+}
+
+function toggleWishlist(bookId) {
+  const wishlist = getWishlist();
+  const bookIndex = wishlist.indexOf(bookId);
+
+  if (bookIndex === -1) {
+    wishlist.push(bookId);
+  } else {
+    wishlist.splice(bookIndex, 1);
+  }
+
+  localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  updateWishlistIcons();
+  updateWishlistCount();
+}
+
+function updateWishlistIcons() {
+  const wishlist = getWishlist();
+  document.querySelectorAll(".wishlist-btn").forEach((button) => {
+    const bookId = parseInt(button.dataset.id);
+    button.classList.toggle("wishlisted", wishlist.includes(bookId));
+  });
+}
+
+function updateWishlistCount() {
+  const wishlist = getWishlist();
+  document.getElementById("wishnav").textContent = wishlist.length;
 }
 
 fetchBooks();
