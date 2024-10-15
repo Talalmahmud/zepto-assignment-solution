@@ -1,5 +1,6 @@
 const apiUrl = "https://gutendex.com/books";
 let books = [];
+let currentPage = 1;
 const defaultCoverImage =
   "https://images.inc.com/uploaded_files/image/1920x1080/getty_509107562_2000133320009280346_351827.jpg"; // Default image for missing covers
 
@@ -9,6 +10,7 @@ async function fetchBooks(page = 1) {
     const data = await response.json();
     books = data.results;
     addBooksToContainer(books);
+    createPagination(data.count);
   } catch (error) {
     console.error("Error fetching books:", error);
   }
@@ -54,6 +56,44 @@ function formatAuthors(authors) {
         })`
     )
     .join(", ");
+}
+
+function shouldDisplayPage(pageNumber, totalPages) {
+  return (
+    pageNumber === 1 ||
+    pageNumber === totalPages ||
+    (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1)
+  );
+}
+
+function createPagination(totalBooks) {
+  const pagination = document.querySelector(".pagination");
+  pagination.innerHTML = "";
+  const totalPages = Math.ceil(totalBooks / 32);
+
+  for (let i = 1; i <= totalPages; i++) {
+    if (shouldDisplayPage(i, totalPages)) {
+      const button = createPaginationButton(i);
+      pagination.appendChild(button);
+    } else if (i === 2 || i === totalPages - 1) {
+      const ellipsis = document.createElement("span");
+      ellipsis.textContent = "…";
+      pagination.appendChild(ellipsis);
+    }
+  }
+}
+
+function createPaginationButton(pageNumber) {
+  const button = document.createElement("button");
+  button.textContent = pageNumber;
+  button.classList.toggle("active", pageNumber === currentPage);
+
+  button.addEventListener("click", () => {
+    currentPage = pageNumber;
+    fetchBooks(pageNumber);
+  });
+
+  return button;
 }
 
 fetchBooks();

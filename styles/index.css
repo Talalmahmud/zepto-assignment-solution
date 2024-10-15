@@ -25,6 +25,7 @@ nav {
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 20;
   padding: 10px;
   background-color: aliceblue;
 }
@@ -51,6 +52,7 @@ nav a:hover {
 /* book card style */
 
 .bookContainer {
+  margin-top: 80px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;
@@ -114,4 +116,37 @@ nav a:hover {
 }
 .wishlist-btn:active {
   background-color: orange;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button,
+.pagination span {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+  background-color: #0056b3;
+}
+
+.pagination button.active {
+  background-color: #28a745;
+}
+
+.pagination span {
+  background-color: transparent;
+  color: black;
+  cursor: default;
+  padding: 10px 0;
 }
