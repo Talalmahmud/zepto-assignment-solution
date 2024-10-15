@@ -24,7 +24,18 @@ function addBooksToContainer(books) {
     container.appendChild(bookCard);
   });
 }
+function addCardEventListeners(bookCard, bookId) {
+  const loveButton = bookCard.querySelector(".wishlist-btn");
 
+  bookCard.addEventListener("click", () => {
+    window.location.href = `book.html?id=${bookId}`;
+  });
+
+  loveButton.addEventListener("click", (e) => {
+    e.stopPropagation(); // Prevent the card click event
+    toggleWishlist(bookId);
+  });
+}
 function createBookCard(book) {
   const bookCard = document.createElement("div");
   bookCard.classList.add("bookCard");
@@ -43,6 +54,7 @@ function createBookCard(book) {
           <p>Genre: ${genre}</p>
           <p>ID: ${book.id}</p>
         `;
+  addCardEventListeners(bookCard, book.id);
 
   return bookCard;
 }
