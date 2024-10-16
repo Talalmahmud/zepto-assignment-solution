@@ -3,7 +3,19 @@ function getBookIdFromURL() {
   return params.get("id");
 }
 
+function getWishlist() {
+  const wishList = JSON.parse(localStorage.getItem("wishlist")) || [];
+  document.getElementById("wishnav").textContent = wishList.length;
+  return wishList;
+}
+
+function toggleLoader(show) {
+  const loader = document.getElementById("loader");
+  loader.style.display = show ? "block" : "none";
+}
+
 async function fetchBookDetails(bookId) {
+  toggleLoader(true);
   try {
     const response = await fetch(`https://gutendex.com/books?ids=${bookId}`);
     const data = await response.json();
@@ -11,6 +23,8 @@ async function fetchBookDetails(bookId) {
     displayBookDetails(book);
   } catch (error) {
     console.error("Error fetching book details:", error);
+  } finally {
+    toggleLoader(false);
   }
 }
 
@@ -29,8 +43,6 @@ function displayBookDetails(book) {
     .join(", ");
 
   const genres = book.subjects.join(", ") || "Unknown";
-
-  // Dynamically adding book details to the page following your class structure
   bookDetailsContainer.innerHTML = `
           <div class="book-image">
             <img src="${book.formats["image/jpeg"]}" alt="${book.title}" />
@@ -38,7 +50,7 @@ function displayBookDetails(book) {
           <div class="book-info">
             <h1>${book.title}</h1>
             <p><strong>Authors:</strong> ${authors}</p>
-            <p><strong>Subjects:</strong> ${genres}</p>
+            <p><strong>Genres:</strong> ${genres}</p>
             <p><strong>Download Count:</strong> ${book.download_count}</p>
             <p><strong>Language:</strong> ${book.languages.join(", ")}</p>
             <p><strong>Media Type:</strong> ${book.media_type}</p>
@@ -51,6 +63,7 @@ function displayBookDetails(book) {
 
 function initBookDetailsPage() {
   const bookId = getBookIdFromURL();
+  getWishlist();
   if (bookId) {
     fetchBookDetails(bookId);
   } else {

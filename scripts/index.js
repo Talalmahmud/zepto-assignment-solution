@@ -21,9 +21,10 @@ function getFromLocalStorage(key) {
 }
 
 async function fetchBooks(page = 1, searchQuery = "", topic = "") {
-  toggleLoader(true); // Show loader
-  clearBookContainer(); // Clear previous books
-  updateWishlistCount(); // Update wishlist count
+  createPagination(0);
+  toggleLoader(true);
+  clearBookContainer();
+  updateWishlistCount();
 
   const url = buildApiUrl(page, searchQuery, topic);
 
@@ -32,15 +33,15 @@ async function fetchBooks(page = 1, searchQuery = "", topic = "") {
     const data = await response.json();
     books = data.results;
 
-    collectGenres(books); // Collect genres from books
-    displayGenres(); // Display collected genres in dropdown
+    collectGenres(books);
+    displayGenres();
 
     addBooksToContainer(books);
-    createPagination(data.count); // Create pagination based on total results
+    createPagination(data.count);
   } catch (error) {
     console.error("Error fetching books:", error);
   } finally {
-    toggleLoader(false); // Hide loader after fetching data
+    toggleLoader(false);
   }
 }
 
@@ -62,12 +63,17 @@ function collectGenres(books) {
 function displayGenres() {
   const genreArray = Array.from(genres);
   const dropdown = document.getElementById("genre-dropdown");
-  dropdown.innerHTML = '<option value="">Select a genre</option>'; // Default option
+  const savedGenre = getFromLocalStorage("genre");
+  dropdown.innerHTML = '<option value="">Select a genre</option>';
 
   genreArray.forEach((genre) => {
     const option = document.createElement("option");
     option.value = genre;
     option.textContent = genre;
+    if (genre === savedGenre) {
+      option.selected = true;
+    }
+
     dropdown.appendChild(option);
   });
 }
@@ -102,13 +108,12 @@ function createBookCard(book) {
     <img src="${coverImage}" alt="${book.title}" />
     <div class="book-info">
     <h3>${truncateTitle(book.title, 20)}</h3>
-    <p><span class="title">Authors<span>: ${authors}</p>
-    <p><span class="title">Genre<span>: ${genres}</p>
-    <p><span class="title">ID<span>: ${book.id}</p>
+    <p><strong>Authors:</strong> ${authors}</p>
+    <p><strong>Genre:</strong> ${genres}</p>
+    <p><strong>ID:</strong> ${book.id}</p>
     </div>
   `;
 
-  // Add click events
   addCardEventListeners(bookCard, book.id);
 
   return bookCard;
@@ -250,5 +255,4 @@ function addEventListeners() {
 
 document.addEventListener("DOMContentLoaded", initialize);
 
-// Fetch books for the initial page load
 fetchBooks();
