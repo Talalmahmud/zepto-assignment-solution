@@ -1,15 +1,15 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box; /* Includes padding and border in width and height */
+  box-sizing: border-box;
 }
 
 body {
-  background-color: azure;
-  max-width: 1100px; /* Sets a maximum width for the content */
-  margin: 0 auto; /* Centers content */
+  background-color: white;
+  max-width: 1100px;
+  margin: 0 auto;
 
-  padding: 20px; /* Adds some space inside the body */
+  margin-top: 60px;
 }
 
 .logo {
@@ -17,33 +17,38 @@ body {
   font-weight: bold;
 }
 
+/* navbar style */
+.navbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: rgb(10, 8, 59);
+}
 nav {
+  max-width: 1100px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%; /* Let the nav take up the full width */
-
-  padding: 10px; /* Adds padding inside the navigation bar */
-  background-color: aliceblue;
 }
 
 ul {
   list-style-type: none;
-  display: flex; /* Flex layout for horizontal navigation */
-  gap: 20px; /* Adds space between list items */
-}
-
-ul li {
-  margin-right: 20px;
+  display: flex;
+  gap: 20px;
 }
 
 nav a {
   text-decoration: none;
-  color: #333;
+  color: #fff;
 }
 
 nav a:hover {
-  color: #007bff; /* Adds a hover effect */
+  color: #007bff;
 }
 
 .wishlist-container {

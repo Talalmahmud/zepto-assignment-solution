@@ -5,10 +5,11 @@
 }
 
 body {
-  background-color: azure;
+  background-color: white;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 20px;
+
+  margin-top: 60px;
 }
 
 .logo {
@@ -17,17 +18,22 @@ body {
 }
 
 /* navbar style */
-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.navbar {
   width: 100%;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 20;
-  padding: 10px;
-  background-color: aliceblue;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: rgb(10, 8, 59);
+}
+nav {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 ul {
@@ -36,13 +42,9 @@ ul {
   gap: 20px;
 }
 
-ul li {
-  margin-right: 20px;
-}
-
 nav a {
   text-decoration: none;
-  color: #333;
+  color: #fff;
 }
 
 nav a:hover {

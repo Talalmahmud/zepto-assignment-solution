@@ -8,16 +8,27 @@
   </head>
   <body>
     <!-- Nav section-->
-    <nav>
-      <a class="logo" href="">BookStore</a>
-      <ul>
-        <li><a href="">Home</a></li>
-        <li>
-          <a href="wishlist.html">Wishlist(<span id="wishnav"></span>)</a>
-        </li>
-      </ul>
-    </nav>
+    <div class="navbar">
+      <nav>
+        <a class="logo" href="">BookStore</a>
+        <ul>
+          <li><a href="">Home</a></li>
+          <li>
+            <a href="wishlist.html">Wishlist(<span id="wishnav"></span>)</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
 
+    <!-- Filter Section-->
+    <div class="filter-container">
+      <input
+        type="text"
+        id="search-bar"
+        placeholder="Search books by title..."
+      />
+      <select id="genre-dropdown"></select>
+    </div>
     <!-- Book section-->
     <div id="loader" style="display: none">Loading...</div>
     <div class="bookContainer"></div>
